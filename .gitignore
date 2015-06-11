@@ -16,6 +16,12 @@ Icon
 .floo
 .flooignore
 
+#NPM
 node_modules
+
+#Build folders
 public/dist/*
+public/lib/*
+
+#Database
 db/shortly.sqlite
