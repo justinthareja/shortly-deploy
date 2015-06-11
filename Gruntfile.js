@@ -3,8 +3,17 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
+      // options: {
+      //   separator: ';',
+      // },
+      dist: {
+        src: ['public/client/*.js', 'public/lib/*.js'],
+        dest: 'public/dist/built.js'
+      },
     },
-
+    clean: ['public/dist/*.js',
+            'public/dist/*.css',
+            '!public/dist/.gitkeep'],
     mochaTest: {
       test: {
         options: {
@@ -21,23 +30,36 @@ module.exports = function(grunt) {
     },
 
     uglify: {
-    },
+      my_target: {
+            files: {
+              'public/dist/built.min.js': ['public/dist/built.js']
+            }
+        }
+      },
 
     jshint: {
-      files: [
-        // Add filespec list here
-      ],
+      files: ['**/*.js'],
       options: {
         force: 'true',
         jshintrc: '.jshintrc',
         ignores: [
           'public/lib/**/*.js',
-          'public/dist/**/*.js'
+          'public/dist/**/*.js',
+          'node_modules/**/*.js'
         ]
       }
     },
 
     cssmin: {
+      target: {
+         files: [{
+           expand: true,
+           cwd: 'public',
+           src: ['*.css', '!*.min.css'],
+           dest: 'public/dist',
+           ext: '.min.css'
+         }]
+       }
     },
 
     watch: {
@@ -59,10 +81,12 @@ module.exports = function(grunt) {
 
     shell: {
       prodServer: {
+        command: 'git push azure master'
       }
     },
   });
 
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
@@ -90,22 +114,28 @@ module.exports = function(grunt) {
   ////////////////////////////////////////////////////
 
   grunt.registerTask('test', [
+    'jshint',
     'mochaTest'
   ]);
 
   grunt.registerTask('build', [
+    'concat',
+    'uglify', 
+    'cssmin',
   ]);
 
   grunt.registerTask('upload', function(n) {
-    if(grunt.option('prod')) {
-      // add your production server task here
+    if(grunt.option('prod')) {  
+      grunt.task.run([ 'shell:prodServer' ])
     } else {
       grunt.task.run([ 'server-dev' ]);
     }
   });
 
   grunt.registerTask('deploy', [
-    // add your deploy tasks here
+    'test',
+    'build',
+    'upload'
   ]);
 
 

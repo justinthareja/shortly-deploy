@@ -15,3 +15,7 @@ Icon
 .floobit
 .floo
 .flooignore
+
+node_modules
+public/dist/*
+db/shortly.sqlite
