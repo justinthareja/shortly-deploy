@@ -7,13 +7,21 @@ module.exports = function(grunt) {
       //   separator: ';',
       // },
       dist: {
-        src: ['public/client/*.js', 'public/lib/*.js'],
+        src: [
+        'public/lib/underscore.js',
+        'public/lib/jquery.js',
+        'public/lib/handlebars.js',
+        'public/lib/backbone.js',
+        'public/client/*.js'
+        ],
         dest: 'public/dist/built.js'
       },
     },
-    clean: ['public/dist/*.js',
+    clean: [
+            'public/dist/*.js',
             'public/dist/*.css',
-            '!public/dist/.gitkeep'],
+            '!public/dist/.gitkeep'
+            ],
     mochaTest: {
       test: {
         options: {
