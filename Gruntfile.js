@@ -127,9 +127,10 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
+    'test',
     'concat',
     'uglify', 
-    'cssmin',
+    'cssmin'
   ]);
 
   grunt.registerTask('upload', function(n) {
@@ -141,7 +142,6 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('deploy', [
-    'test',
     'build',
     'upload'
   ]);
