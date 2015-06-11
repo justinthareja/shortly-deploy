@@ -19,8 +19,7 @@ Icon
 #NPM
 node_modules
 
-#Build folders
-public/dist/*
+#lib
 public/lib/*
 
 #Database
