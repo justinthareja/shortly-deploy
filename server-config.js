@@ -16,11 +16,11 @@ app.configure(function() {
   app.use(express.session());
 });
 
-app.get('/', util.checkUser, handler.renderIndex);
+app.get('/', handler.renderIndex); // add user check
 app.get('/create', util.checkUser, handler.renderIndex);
 
 // app.get('/links', util.checkUser, handler.fetchLinks);
-app.get('/links', handler.fetchLinks);
+app.get('/links', handler.fetchLinks); //add user check
 
 app.post('/links', handler.saveLink);
 
