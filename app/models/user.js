@@ -23,7 +23,8 @@ userSchema.methods.hashPassword = function(callback){
 
 userSchema.methods.comparePassword = function(attemptedPassword, callback) {
   bcrypt.compare(attemptedPassword, this.password, function(err, isMatch) {
-    callback(isMatch);
+    if (err) console.error()
+    callback(null,isMatch);
   });
 };
 

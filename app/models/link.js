@@ -1,19 +1,24 @@
 var db = require('../config');
 var crypto = require('crypto');
 
-var Link = db.Model.extend({
-  tableName: 'urls',
-  hasTimestamps: true,
-  defaults: {
-    visits: 0
-  },
-  initialize: function(){
-    this.on('creating', function(model, attrs, options){
-      var shasum = crypto.createHash('sha1');
-      shasum.update(model.get('url'));
-      model.set('code', shasum.digest('hex').slice(0, 5));
-    });
-  }
+
+var linkSchema = db.Schema({
+    url: String,
+    base_url: String,
+    code: String,
+    title: String,
+    visits: {type: Number, default: 0}
+  });
+
+linkSchema.pre('save', function(next) {
+  this.createShortURL(next);
 });
 
-module.exports = Link;
+linkSchema.methods.createShortURL = function(next){
+  var shasum = crypto.createHash('sha1');
+  shasum.update(this.url);
+  this.code = shasum.digest('hex').slice(0, 5);
+  next();
+};
+
+module.exports = db.model('Link', linkSchema);
