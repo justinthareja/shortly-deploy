@@ -1,4 +1,4 @@
-process.env.NODE_ENV='development';
+
 console.log('process.env=',process.env);
 var app = require('./server-config.js');
 
